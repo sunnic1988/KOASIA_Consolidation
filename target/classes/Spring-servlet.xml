@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:util="http://www.springframework.org/schema/util" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd    
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd    
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd                
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd"> 
+               
+    <!-- 激活注解模式，如@Controller -->  
+    <mvc:annotation-driven />  
+    
+    <!-- 对包中的类的注解进行扫描，创建Bean及自动依赖注入  -->  
+    <context:component-scan base-package="mvc" />  
+  
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />  
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix">  
+            <value>/</value>  
+        </property>  
+        <property name="suffix">  
+            <value>.jsp</value>  
+        </property>  
+    </bean>  
+    
+    <!-- 定义jobdetail --> 
+    <bean id = "JobInsertMysql" class = "org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <property name = "jobClass" value = "mvc.quartz.JobInsertMysql"/>  
+    <property name = "jobDataMap" >
+    <map>
+    <!-- 可以传值进去 --> 
+    <!-- <entry key = "anotherBean" value-ref ="anotherBean"/> -->
+    </map>
+    </property>
+    <property name="Durability" value = "true"/>
+    </bean> 
+    
+    <!-- 触发器定义时间频率-->
+    <bean id = "cronTrigger" class = "org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name = "jobDetail" ref = "JobInsertMysql"/>  
+            <property name="cronExpression">
+            <value>0 20 19 ? * *</value>
+            </property>
+    </bean>   
+          
+<!--     0 0 12 * * ?	每天中午 12 点 -->
+<!--     0 15 10 ? * *	每天上午 10 点 15 分 -->
+<!--     0 15 10 * * ?	每天上午 10 点 15 分 -->
+<!--     0 15 10 * * ? *	每天上午 10 点 15 分 -->
+<!--     0 15 10 * * ? 2005	在 2005 年里的每天上午 10 点 15 分 -->
+<!--     0 * 14 * * ?	每天下午 2 点到下午 2 点 59 分的每一分钟 -->
+<!--     0 0/5 14 * * ?	每天下午 2 点到 2 点 55 分每隔 5 分钟 -->
+<!--     0 0/5 14,18 * * ?	每天下午 2 点到 2 点 55 分, 下午 6 点到 6 点 55 分, 每隔 5 分钟 -->
+<!--     0 0-5 14 * * ?	每天下午 2 点到 2 点 5 分的每一分钟 -->
+<!--     0 10,44 14 ? 3 WED	3 月每周三的下午 2 点 10 分和下午 2 点 44 分 -->
+<!--     0 15 10 ? * MON-FRI	每周一到周五的上午 10 点 15 分 -->
+<!--     0 15 10 15 * ?	每月 15 号的上午 10 点 15 分 -->
+<!--     0 15 10 L * ?	每月最后一天的上午 10 点 15 分 -->
+<!--     0 15 10 L-2 * ?	每月最后两天的上午10点15分 -->
+<!--     0 15 10 ? * 6L	每月的最后一个星期五的上午 10 点 15 分 -->
+<!--     0 15 10 ? * 6L 2002-2005	2002 年到 2005 年每个月的最后一个星期五的上午 10 点 15 分 -->
+<!--     0 15 10 ? * 6#3	每月的第三个星期五的上午 10 点 15 分 -->
+<!--     0 0 12 1/5 * ?	每月的 1 号开始每隔 5 天的中午 12点 --> 
+<!--     0 11 11 11 11 ?	每年 11 月 11 号上午 11 点 11 分 -->
+         
+     <!-- Scheduler-->       
+    <bean class = "org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name = "jobDetails">
+    <list>
+    <ref bean = "JobInsertMysql"/>
+    </list>
+    </property>
+     <property name = "triggers">
+     <list>
+     <ref bean = "cronTrigger"/>
+     </list>
+     </property>
+    </bean>
+
+</beans>  
