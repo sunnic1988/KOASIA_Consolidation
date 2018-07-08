@@ -309,9 +309,9 @@ public class AjaxCreateDataServelt extends HttpServlet {
 			String StateCheck = rows.getString("OpenClose");
 			if (StateCheck.equals("Open")) {
 				String MonthCheck = PeriodCheck.substring(4, 6);
-				System.out.println("MonthCheck" + MonthCheck);
+				//System.out.println("MonthCheck" + MonthCheck);
 				String YearCheck = PeriodCheck.substring(0, 4);
-				System.out.println("YearCheck" + YearCheck);
+				//System.out.println("YearCheck" + YearCheck);
 				if ((Integer.parseInt(MonthCheck) == Integer.parseInt(period))
 						&& (Integer.parseInt(YearCheck) == Integer.parseInt(year))) {
 					return true;

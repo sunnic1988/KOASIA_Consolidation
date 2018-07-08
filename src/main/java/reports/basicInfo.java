@@ -579,7 +579,7 @@ public class basicInfo {
 						prep.setString(14, mainCurrency[j]);
 
 						prep.addBatch();
-						System.out.println("?????BSDIFF Profit/Loss????" + mainCurrency[j] + (n + 1) + "???");
+						System.out.println("BSDIFF Profit/Loss was finished" + mainCurrency[j] + (n + 1) + "???");
 					}
 				}
 			}
@@ -632,7 +632,7 @@ public class basicInfo {
 						prep.setString(14, mainCurrency[j]);
 
 						prep.addBatch();
-						System.out.println("?????BSDIFF Income before Tax????" + mainCurrency[j] + (n + 1) + "???");
+						System.out.println("BSDIFF Income before Tax was finished" + mainCurrency[j] + (n + 1) + "???");
 					}
 				}
 			}
